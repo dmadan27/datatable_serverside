@@ -21,67 +21,67 @@
 		else if(strtolower($action) === "edit") actionEdit($koneksi); // aksi edit
 	}
 
-	// fungsi list datatable
-	function listAjax($koneksi){
-		// inisialisasi var penangkap data yg dikirim oleh client
-		$draw = isset($_POST['draw']) ? $_POST['draw'] : false;
-		$length = isset($_POST['length']) ? $_POST['length'] : false;
-		$start = isset($_POST['start']) ? $_POST['start'] : false;
-		$search = isset($_POST['search']['value']) ? $_POST['search']['value'] : false;
-		$order = isset($_POST['order']) ? $_POST['order'] : false;
+	// // fungsi list datatable
+	// function listAjax($koneksi){
+	// 	// inisialisasi var penangkap data yg dikirim oleh client
+	// 	$draw = isset($_POST['draw']) ? $_POST['draw'] : false;
+	// 	$length = isset($_POST['length']) ? $_POST['length'] : false;
+	// 	$start = isset($_POST['start']) ? $_POST['start'] : false;
+	// 	$search = isset($_POST['search']['value']) ? $_POST['search']['value'] : false;
+	// 	$order = isset($_POST['order']) ? $_POST['order'] : false;
 		
-		$tabel = "provinces";
-		$query = '';
+	// 	$tabel = "provinces";
+	// 	$query = '';
 
-		$output = array();
+	// 	$output = array();
 
-		$query = "SELECT id, name FROM $tabel ";
+	// 	$query = "SELECT id, name FROM $tabel ";
 
-		$statement = $koneksi->prepare($query);
-		$statement->execute();
-		$totalProv = $statement->rowCount();
+	// 	$statement = $koneksi->prepare($query);
+	// 	$statement->execute();
+	// 	$totalProv = $statement->rowCount();
 
-		$output['draw'] = $draw;
-		$output['recordsTotal']=$output['recordsFiltered']=$totalProv;
+	// 	$output['draw'] = $draw;
+	// 	$output['recordsTotal']=$output['recordsFiltered']=$totalProv;
 
-		// jika ada pencarian
-		if($search){
-			$query .= 'WHERE id LIKE "%'.$search.'%" ';
-			$query .= 'OR name LIKE "%'.$search.'%" ';   
-		}
+	// 	// jika ada pencarian
+	// 	if($search){
+	// 		$query .= 'WHERE id LIKE "%'.$search.'%" ';
+	// 		$query .= 'OR name LIKE "%'.$search.'%" ';   
+	// 	}
 
-		// jika ada request order
-		// saat order akan menyesuaikan dgn query select
-		if($order) $query .= 'ORDER BY '.$order[0]['column'].' '.$order[0]['dir'].' ';
-		else $query .= 'ORDER BY id ASC ';
+	// 	// jika ada request order
+	// 	// saat order akan menyesuaikan dgn query select
+	// 	if($order) $query .= 'ORDER BY '.$order[0]['column'].' '.$order[0]['dir'].' ';
+	// 	else $query .= 'ORDER BY id ASC ';
 
-		$query .= 'LIMIT '.$start.', '.$length;
+	// 	$query .= 'LIMIT '.$start.', '.$length;
 
-		$statement = $koneksi->prepare($query);
-		$statement->execute();
-		$result = $statement->fetchAll(); // mendapatkan semua data dari query
-		$totalRow = $statement->rowCount();
+	// 	$statement = $koneksi->prepare($query);
+	// 	$statement->execute();
+	// 	$result = $statement->fetchAll(); // mendapatkan semua data dari query
+	// 	$totalRow = $statement->rowCount();
 
-		// ketika dalam mode pencarian, atur kembali nilai record total dan filter
-		// sesuai dgn hasil dari pencarian
-		if($search) $output['recordsTotal'] = $output['recordsFiltered'] = $totalRow;
+	// 	// ketika dalam mode pencarian, atur kembali nilai record total dan filter
+	// 	// sesuai dgn hasil dari pencarian
+	// 	if($search) $output['recordsTotal'] = $output['recordsFiltered'] = $totalRow;
 
-		$nomor_urut = $start+1;
-		foreach($result as $row){
-			$dataProvinsi = array();
-			$aksi = '<a role="button" class="btn btn-success" href="'.base_url.'provinsi/form.php?id='.$row["id"].'">Edit</a>';
+	// 	$nomor_urut = $start+1;
+	// 	foreach($result as $row){
+	// 		$dataProvinsi = array();
+	// 		$aksi = '<a role="button" class="btn btn-success" href="'.base_url.'provinsi/form.php?id='.$row["id"].'">Edit</a>';
 
-			$output['data'][] = array(
-				$nomor_urut, // no
-				$row['id'],
-				$row['name'], // nama provinsi
-				$aksi, // aksi
-			);
-			$nomor_urut++;
-		}
+	// 		$output['data'][] = array(
+	// 			$nomor_urut, // no
+	// 			$row['id'],
+	// 			$row['name'], // nama provinsi
+	// 			$aksi, // aksi
+	// 		);
+	// 		$nomor_urut++;
+	// 	}
 
-		echo json_encode($output);
-	}
+	// 	echo json_encode($output);
+	// }
 
 	// fungsi list datatable
 	function listAjax($koneksi){
